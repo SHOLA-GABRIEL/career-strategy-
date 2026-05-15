@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career OS — Cloud Architect & DevSecOps Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #05080f;
+    --surface:  #090d16;
+    --surface2: #0e1420;
+    --surface3: #131b2e;
+    --border:   #1a2540;
+    --border2:  #243050;
+    --cyan:     #00f0ff;
+    --green:    #00ff88;
+    --amber:    #ffb800;
+    --purple:   #8b5cf6;
+    --red:      #ff4466;
+    --text:     #dde6f5;
+    --muted:    #4a5980;
+    --muted2:   #6b7fa8;
+    --glow-c:   rgba(0,240,255,0.15);
+    --glow-g:   rgba(0,255,136,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── ANIMATED BACKGROUND ── */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+
+  .bg-layer::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(0,240,255,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139,92,246,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 50% 50%, rgba(0,255,136,0.02) 0%, transparent 70%);
+  }
+
+  .grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: gridDrift 30s linear infinite;
+  }
+
+  @keyframes gridDrift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(48px); }
+  }
+
+  /* ── SCANLINES ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 56px;
+    background: rgba(5,8,15,0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 32px;
+    gap: 0;
+  }
+
+  .nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--cyan);
+    text-shadow: 0 0 20px rgba(0,240,255,0.6);
+    margin-right: 40px;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex; gap: 2px; flex: 1;
+  }
+
+  .nav-link {
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted2);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+
+  .nav-link:hover {
+    color: var(--cyan);
+    background: rgba(0,240,255,0.06);
+    border-color: rgba(0,240,255,0.15);
+  }
+
+  .nav-status {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+  }
+
+  .blink {
+    animation: blink 1.2s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 100px 48px 60px;
+    max-width: 1300px; margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 9vw, 130px);
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .hero-title .line1 { color: var(--text); display: block; }
+  .hero-title .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,240,255,0.5);
+    display: block;
+  }
+  .hero-title .line3 {
+    color: var(--cyan);
+    text-shadow: 0 0 60px rgba(0,240,255,0.4);
+    display: block;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--muted2);
+    max-width: 560px;
+    margin: 24px 0 40px;
+    line-height: 1.7;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+
+  .hero-stats {
+    display: flex; gap: 0; flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .stat {
+    padding: 16px 28px;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .stat:first-child { border-radius: 8px 0 0 8px; }
+  .stat:last-child { border-radius: 0 8px 8px 0; }
+  .stat + .stat { border-left: none; }
+
+  .stat:hover { background: rgba(0,240,255,0.03); }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--cyan);
+    text-shadow: 0 0 20px rgba(0,240,255,0.4);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    position: relative; z-index: 1;
+    max-width: 1300px; margin: 0 auto;
+    padding: 60px 48px;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .section-label span {
+    color: var(--cyan);
+    font-size: 9px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 40px;
+    line-height: 1;
+  }
+
+  .section-title em {
+    font-style: normal;
+    color: var(--cyan);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    position: relative; z-index: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), var(--border), transparent);
+    max-width: 1300px; margin: 0 auto;
+  }
+
+  /* ── PROFILE CARD ── */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .profile-cell {
+    background: var(--surface);
+    padding: 24px;
+    transition: background 0.2s;
+  }
+
+  .profile-cell:hover { background: var(--surface2); }
+
+  .cell-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .cell-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 6px var(--cyan);
+    flex-shrink: 0;
+  }
+
+  .cell-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .cell-sub {
+    font-size: 12px;
+    color: var(--muted2);
+    margin-top: 4px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    margin: 2px;
+    border: 1px solid;
+  }
+
+  .tag-cyan { background: rgba(0,240,255,0.08); color: var(--cyan); border-color: rgba(0,240,255,0.2); }
+  .tag-green { background: rgba(0,255,136,0.07); color: var(--green); border-color: rgba(0,255,136,0.2); }
+  .tag-amber { background: rgba(255,184,0,0.08); color: var(--amber); border-color: rgba(255,184,0,0.2); }
+  .tag-purple { background: rgba(139,92,246,0.1); color: #a78bfa; border-color: rgba(139,92,246,0.25); }
+  .tag-red { background: rgba(255,68,102,0.08); color: #ff6b85; border-color: rgba(255,68,102,0.2); }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--cyan), var(--purple), var(--green));
+    opacity: 0.4;
+  }
+
+  .tl-item {
+    position: relative;
+    padding: 0 0 32px 32px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -5px; top: 6px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--cyan);
+    background: var(--bg);
+    box-shadow: 0 0 12px rgba(0,240,255,0.5);
+    transition: all 0.3s;
+  }
+
+  .tl-item:hover::before {
+    background: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,240,255,0.8);
+  }
+
+  .tl-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .tl-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .tl-tasks {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+
+  .tl-tasks li {
+    font-size: 13px;
+    color: var(--muted2);
+    display: flex; gap: 8px;
+    align-items: flex-start;
+  }
+
+  .tl-tasks li::before {
+    content: '▸';
+    color: var(--cyan);
+    opacity: 0.6;
+    flex-shrink: 0;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+
+  /* ── PROJECT CARDS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .proj-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .proj-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    transition: opacity 0.3s;
+  }
+
+  .proj-card.c1::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .proj-card.c2::before { background: linear-gradient(90deg, var(--purple), transparent); }
+  .proj-card.c3::before { background: linear-gradient(90deg, var(--green), transparent); }
+  .proj-card.c4::before { background: linear-gradient(90deg, var(--amber), transparent); }
+  .proj-card.c5::before { background: linear-gradient(90deg, var(--red), transparent); }
+  .proj-card.c6::before { background: linear-gradient(90deg, #00f0ff, #8b5cf6, transparent); }
+
+  .proj-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,240,255,0.08);
+  }
+
+  .proj-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: 8px; right: 14px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .proj-phase {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .proj-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .proj-desc {
+    font-size: 12px;
+    color: var(--muted2);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .proj-stack {
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+
+  .stack-pill {
+    padding: 2px 8px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── CERT CARDS ── */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .cert-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+
+  .cert-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .cert-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .cert-code {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .cert-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 6px;
+  }
+
+  .cert-cost {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  .cert-when {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  /* ── PROMPT SECTION ── */
+  .prompt-wrapper {
+    position: relative;
+  }
+
+  .prompt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .prompt-dots {
+    display: flex; gap: 6px;
+  }
+
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28ca41; }
+
+  .prompt-title-bar {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+  }
+
+  .copy-btn {
+    padding: 6px 16px;
+    background: rgba(0,240,255,0.08);
+    border: 1px solid rgba(0,240,255,0.2);
+    border-radius: 6px;
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .copy-btn:hover {
+    background: rgba(0,240,255,0.15);
+    box-shadow: 0 0 12px rgba(0,240,255,0.2);
+  }
+
+  .copy-btn.copied {
+    color: var(--green);
+    border-color: rgba(0,255,136,0.3);
+    background: rgba(0,255,136,0.08);
+  }
+
+  .prompt-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--border2);
+    border-radius: 0 0 10px 10px;
+    padding: 0;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .prompt-body::-webkit-scrollbar { width: 6px; }
+  .prompt-body::-webkit-scrollbar-track { background: var(--surface); }
+  .prompt-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  .prompt-content {
+    padding: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--muted2);
+    white-space: pre-wrap;
+  }
+
+  .prompt-content .c-section { color: var(--amber); font-weight: 700; }
+  .prompt-content .c-key { color: var(--cyan); }
+  .prompt-content .c-val { color: var(--text); }
+  .prompt-content .c-comment { color: var(--muted); font-style: italic; }
+  .prompt-content .c-green { color: var(--green); }
+  .prompt-content .c-purple { color: #a78bfa; }
+
+  /* ── BLOCKERS ── */
+  .blockers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .blocker-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    display: flex; gap: 14px;
+    align-items: flex-start;
+    transition: all 0.25s;
+  }
+
+  .blocker-card:hover {
+    border-color: rgba(255,68,102,0.25);
+    background: rgba(255,68,102,0.03);
+  }
+
+  .blocker-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: rgba(255,68,102,0.2);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .blocker-info {}
+  .blocker-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .blocker-desc { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+
+  /* ── JOB BOARDS ── */
+  .boards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .board-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    transition: all 0.2s;
+  }
+
+  .board-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+  }
+
+  .board-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .board-note { font-size: 11px; color: var(--muted2); margin-top: 3px; }
+
+  .tier-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .tier-1 { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+  .tier-2 { background: rgba(0,240,255,0.08); color: var(--cyan); border: 1px solid rgba(0,240,255,0.15); }
+  .tier-3 { background: rgba(255,184,0,0.08); color: var(--amber); border: 1px solid rgba(255,184,0,0.15); }
+
+  /* ── SALARY TABLE ── */
+  .salary-rows { display: flex; flex-direction: column; gap: 10px; }
+
+  .salary-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 160px;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .salary-row:hover { border-color: var(--border2); }
+
+  .salary-role { font-size: 13px; font-weight: 600; color: var(--text); }
+  .salary-range { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--green); }
+
+  .salary-bar {
+    height: 4px; background: var(--border);
+    border-radius: 2px; overflow: hidden;
+  }
+
+  .salary-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    border-radius: 2px;
+    animation: fillAnim 2s ease both;
+  }
+
+  @keyframes fillAnim { from { width: 0 !important; } }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    max-width: 1300px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+  }
+
+  .footer-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer-text strong { color: var(--muted2); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { padding: 90px 24px 48px; }
+    .section { padding: 48px 24px; }
+    footer { padding: 24px; }
+    .profile-grid { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+    .certs-grid { grid-template-columns: 1fr 1fr; }
+    .blockers-grid { grid-template-columns: 1fr 1fr; }
+    .boards-grid { grid-template-columns: 1fr 1fr; }
+    .salary-row { grid-template-columns: 1fr 1fr; }
+    .hero-stats { flex-direction: column; }
+    .stat { border-radius: 0 !important; }
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .certs-grid { grid-template-columns: 1fr; }
+    .blockers-grid { grid-template-columns: 1fr; }
+    .boards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="grid-overlay"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">CAREER·OS</div>
+  <div class="nav-links">
+    <a href="#profile" class="nav-link">Profile</a>
+    <a href="#timeline" class="nav-link">Timeline</a>
+    <a href="#projects" class="nav-link">Projects</a>
+    <a href="#certs" class="nav-link">Certs</a>
+    <a href="#prompt" class="nav-link">Prompt</a>
+    <a href="#jobs" class="nav-link">Jobs</a>
+  </div>
+  <div class="nav-status">
+    <span class="blink">█</span> SYSTEM ACTIVE — TARGET: $2,500+/MO REMOTE
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Silicon Valley Career Strategy · Built For You</div>
+  <h1 class="hero-title">
+    <span class="line1">CLOUD</span>
+    <span class="line2">ARCHITECT</span>
+    <span class="line3">CAREER OS</span>
+  </h1>
+  <p class="hero-desc">
+    Your complete <strong>Proof of Work ecosystem</strong> — certifications, projects, outreach scripts, and a master prompt for landing a <strong>$2,500–$5,000+/month remote role</strong> in Cloud Architecture, DevSecOps, and AI Automation.
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">JUN 6</span>
+      <span class="stat-label">Last Exam</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">SEP</span>
+      <span class="stat-label">Graduation</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Target Certs</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">6</span>
+      <span class="stat-label">POW Projects</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" style="color:var(--green)">$5K</span>
+      <span class="stat-label">Year 1 Target</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROFILE -->
+<section class="section" id="profile">
+  <div class="section-label"><span>01</span> Identity Stack</div>
+  <h2 class="section-title">YOUR <em>PROFILE</em></h2>
+
+  <div class="profile-grid fade-in">
+    <div class="profile-cell">
+      <div class="cell-label">Degree</div>
+      <div class="cell-value">Cyber Security</div>
+      <div class="cell-sub">Final Year · Graduating September 2026</div>
+    </div>
+    <div class="profile-cell">
+      <div class="cell-label">Location & Market</div>
+      <div class="cell-value">Nigeria → Global Remote</div>
+      <div class="cell-sub">Target: UK · Canada · EU · Netherlands</div>
+    </div>
+    <div class="profile-cell">
+      <div class="cell-label">Target Salary</div>
+      <div class="cell-value" style="color:var(--green)">$2,500 – $5,000+</div>
+      <div class="cell-sub">Per month · Remote only · Year 1</div>
+    </div>
+    <div class="profile-cell">
+      <div class="cell-label">Primary Target Roles</div>
+      <div class="cell-value" style="font-size:13px;">
+        <div style="margin-bottom:4px;">
+          <span class="tag tag-cyan">Cloud Architect</span>
+          <span class="tag tag-green">DevSecOps Engineer</span>
+        </div>
+        <span class="tag tag-purple">AI Automation Engineer</span>
+      </div>
+    </div>
+    <div class="profile-cell">
+      <div class="cell-label">Core Tech Stack</div>
+      <div class="cell-value" style="font-size:12px;">
+        <span class="tag tag-cyan">AWS</span>
+        <span class="tag tag-cyan">Terraform</span>
+        <span class="tag tag-green">Python</span>
+        <span class="tag tag-purple">Claude API</span>
+        <span class="tag tag-green">GitHub Actions</span>
+        <span class="tag tag-amber">Docker</span>
+        <span class="tag tag-cyan">LangChain</span>
+        <span class="tag tag-purple">n8n</span>
+      </div>
+    </div>
+    <div class="profile-cell">
+      <div class="cell-label">Key Milestones</div>
+      <div class="cell-value" style="font-size:13px; line-height:1.8;">
+        <div>Jun 6 → Last exam done</div>
+        <div>Jun 25 → CCA-F cert</div>
+        <div>Aug 7 → AWS + Terraform</div>
+        <div>Sep → Graduation</div>
+        <div>Oct+ → NYSC + remote work</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIMELINE -->
+<section class="section" id="timeline">
+  <div class="section-label"><span>02</span> Execution Map</div>
+  <h2 class="section-title">MASTER <em>TIMELINE</em></h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;" class="fade-in">
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-date">JUN 6–13 · LIBERATION WEEK</div>
+        <div class="tl-title">Rest → Then Lock In Immediately</div>
+        <ul class="tl-tasks">
+          <li>3 days rest (Jun 6–8) — celebrate your last exam</li>
+          <li>Optimize LinkedIn fully — headline, about, featured</li>
+          <li>Complete Google AI Essentials — free badge in 2 hours</li>
+          <li>Sign up Anthropic Academy — start free CCA-F prep</li>
+          <li>Open AWS free tier account — hands-on starts now</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">JUN 14–25 · CERT PHASE 1</div>
+        <div class="tl-title">CCA-F — Claude Certified Architect</div>
+        <ul class="tl-tasks">
+          <li>Complete all 13 Anthropic Academy courses (free)</li>
+          <li>Download official Exam Guide PDF from Skilljar</li>
+          <li>Practice questions daily — target 900+/1000</li>
+          <li>Sit CCA-F exam June 25 ($99) → Pass ✅</li>
+          <li>Post LinkedIn announcement same day</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">JUL 1–31 · BUILD MONTH</div>
+        <div class="tl-title">Projects + SAA-C03 Heavy Prep</div>
+        <ul class="tl-tasks">
+          <li>AWS SAA-C03 study — freeCodeCamp + AWS free tier daily</li>
+          <li>Ship Project 1: AI Misconfiguration Detector</li>
+          <li>Ship Project 2: SAST Pipeline with AI Triage</li>
+          <li>Start Terraform Associate study — HashiCorp docs</li>
+          <li>LinkedIn: 10 connections/day + 1 post/week</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">AUG 1–7 · EXAM WEEK</div>
+        <div class="tl-title">AWS SAA-C03 + Terraform — Sit Both</div>
+        <ul class="tl-tasks">
+          <li>Day 1: AWS SAA-C03 — sit and pass ($150)</li>
+          <li>Day 3: Rest + light Terraform review</li>
+          <li>Day 5: Terraform Associate — sit and pass ($70)</li>
+          <li>Day 7: Update LinkedIn — both badges live</li>
+          <li>Total cert spend: ~$319 across 3 months</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item" style="--dot-color:var(--purple)">
+        <div class="tl-date" style="color:var(--purple)">AUG 8–31 · LAUNCH MODE</div>
+        <div class="tl-title">Applications + Freelance Setup</div>
+        <ul class="tl-tasks">
+          <li>Ship Project 3: Compliance Copilot</li>
+          <li>Final resume — 3 certs + 3 projects with metrics</li>
+          <li>5 targeted job applications every single day</li>
+          <li>Set up Upwork + Fiverr profiles for freelance income</li>
+          <li>Payoneer + Wise accounts fully verified and ready</li>
+        </ul>
+      </div>
+
+      <div class="tl-item" style="--dot-color:var(--green)">
+        <div class="tl-date" style="color:var(--green)">SEPTEMBER · GRADUATION</div>
+        <div class="tl-title">Walk Across Stage Already Employed</div>
+        <ul class="tl-tasks">
+          <li>By now: 3 certs + 3 projects + 300+ connections</li>
+          <li>Graduation "just graduated" post — high engagement</li>
+          <li>Mention certs + projects in the post</li>
+          <li>Continue 5 applications/day through NYSC registration</li>
+          <li>Follow up all pending applications aggressively</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date" style="color:var(--amber)">OCT+ · NYSC + REMOTE WORK</div>
+        <div class="tl-title">Service Year Does Not Stop Progress</div>
+        <ul class="tl-tasks">
+          <li>Negotiate remote-friendly NYSC placement in Lagos/Abuja tech</li>
+          <li>Remote roles are NYSC-compatible — keep applying</li>
+          <li>Build Projects 4–6 on evenings and weekends</li>
+          <li>Corper allowance → fund AWS Security Specialty exam</li>
+          <li>LinkedIn: 3 posts/week minimum — stay visible</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date" style="color:var(--cyan)">YEAR 1 POST-NYSC · LEVELING UP</div>
+        <div class="tl-title">Senior Roles + $5,000+/Month Target</div>
+        <ul class="tl-tasks">
+          <li>AWS Security Specialty (SCS-C02) — enterprise signal</li>
+          <li>6 projects live + 6 blog posts indexed on Google</li>
+          <li>500+ targeted LinkedIn connections</li>
+          <li>1–2 active freelance clients generating income</li>
+          <li>Negotiate next role to $4,000–$6,000/month</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <div class="section-label"><span>03</span> Proof of Work</div>
+  <h2 class="section-title">6 PORTFOLIO <em>PROJECTS</em></h2>
+
+  <div class="projects-grid fade-in">
+
+    <div class="proj-card c1">
+      <div class="proj-number">01</div>
+      <div class="proj-phase"><span class="tag tag-cyan">Pre-NYSC · Priority 1</span></div>
+      <div class="proj-name">AI Misconfiguration Detector</div>
+      <div class="proj-desc">Scans AWS infrastructure via Terraform state files, uses Claude API to flag misconfigurations in plain English, generates auto-remediation PRs. Your flagship project.</div>
+      <div class="proj-stack">
+        <span class="stack-pill">AWS SDK</span>
+        <span class="stack-pill">Terraform</span>
+        <span class="stack-pill">Claude API</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">GitHub Actions</span>
+      </div>
+    </div>
+
+    <div class="proj-card c2">
+      <div class="proj-number">02</div>
+      <div class="proj-phase"><span class="tag tag-purple">Pre-NYSC · Priority 2</span></div>
+      <div class="proj-name">SAST Pipeline with AI Triage</div>
+      <div class="proj-desc">CI/CD pipeline runs Semgrep static analysis, feeds findings to Claude for severity triage and false-positive filtering, blocks deploys on critical vulns automatically.</div>
+      <div class="proj-stack">
+        <span class="stack-pill">GitHub Actions</span>
+        <span class="stack-pill">Semgrep</span>
+        <span class="stack-pill">Claude API</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">Docker</span>
+      </div>
+    </div>
+
+    <div class="proj-card c3">
+      <div class="proj-number">03</div>
+      <div class="proj-phase"><span class="tag tag-green">During NYSC</span></div>
+      <div class="proj-name">Compliance Copilot</div>
+      <div class="proj-desc">Upload a security policy PDF → AI extracts control requirements, maps to NIST/ISO27001 frameworks, outputs a gap analysis report. Solves a real GRC pain point companies pay for.</div>
+      <div class="proj-stack">
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">LangChain</span>
+        <span class="stack-pill">RAG</span>
+        <span class="stack-pill">Streamlit</span>
+        <span class="stack-pill">OpenAI</span>
+      </div>
+    </div>
+
+    <div class="proj-card c4">
+      <div class="proj-number">04</div>
+      <div class="proj-phase"><span class="tag tag-amber">Post-NYSC</span></div>
+      <div class="proj-name">Cloud Honeypot + Alert System</div>
+      <div class="proj-desc">Deploys decoy AWS resources that log attacker interactions, enriches with geolocation and MITRE ATT&CK TTPs, auto-generates incident reports in real time.</div>
+      <div class="proj-stack">
+        <span class="stack-pill">AWS Lambda</span>
+        <span class="stack-pill">CloudTrail</span>
+        <span class="stack-pill">Terraform</span>
+        <span class="stack-pill">MITRE ATT&CK</span>
+        <span class="stack-pill">Python</span>
+      </div>
+    </div>
+
+    <div class="proj-card c5">
+      <div class="proj-number">05</div>
+      <div class="proj-phase"><span class="tag tag-red">Post-NYSC</span></div>
+      <div class="proj-name">Threat Intel Automation Pipeline</div>
+      <div class="proj-desc">Ingests feeds from VirusTotal, Shodan, and CVE databases. Enriches with AI, de-duplicates, and pushes prioritized alerts to Slack in real time with zero manual intervention.</div>
+      <div class="proj-stack">
+        <span class="stack-pill">n8n</span>
+        <span class="stack-pill">Shodan API</span>
+        <span class="stack-pill">OpenAI</span>
+        <span class="stack-pill">Slack API</span>
+        <span class="stack-pill">MISP</span>
+      </div>
+    </div>
+
+    <div class="proj-card c6">
+      <div class="proj-number">06</div>
+      <div class="proj-phase"><span class="tag tag-cyan">Post-NYSC</span></div>
+      <div class="proj-name">Zero Trust Homelab (Documented)</div>
+      <div class="proj-desc">Full zero-trust network on Proxmox: Vault for secrets, WireGuard VPN, CrowdSec IDS, Grafana monitoring. Fully documented — blog post gets indexed on Google passively forever.</div>
+      <div class="proj-stack">
+        <span class="stack-pill">Proxmox</span>
+        <span class="stack-pill">HashiCorp Vault</span>
+        <span class="stack-pill">WireGuard</span>
+        <span class="stack-pill">CrowdSec</span>
+        <span class="stack-pill">Grafana</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:20px;padding:16px 20px;background:var(--surface);border:1px dashed rgba(0,240,255,0.2);border-radius:8px;font-size:12px;color:var(--muted2);" class="fade-in">
+    <strong style="color:var(--cyan);">Each project must ship with 4 things:</strong> &nbsp;
+    GitHub repo with full README &nbsp;·&nbsp; Architecture diagram &nbsp;·&nbsp; 3-min Loom demo video &nbsp;·&nbsp; Dev.to/Medium blog post
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTS -->
+<section class="section" id="certs">
+  <div class="section-label"><span>04</span> Credential Stack</div>
+  <h2 class="section-title">3 TARGET <em>CERTIFICATIONS</em></h2>
+
+  <div class="certs-grid fade-in">
+
+    <div class="cert-card" style="border-top:2px solid var(--green);">
+      <span class="cert-icon">🆓</span>
+      <div class="cert-name">Google AI Essentials</div>
+      <div class="cert-code">google.com/certificates</div>
+      <div class="cert-meta">
+        <span class="cert-cost">FREE</span>
+        <span class="cert-when tag tag-green">Week 1 · Jun 9–13</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:10px;">Fast LinkedIn win. Google-branded badge. Done in a weekend. No excuse.</div>
+    </div>
+
+    <div class="cert-card" style="border-top:2px solid var(--cyan);">
+      <span class="cert-icon">🤖</span>
+      <div class="cert-name">Claude Certified Architect – Foundations</div>
+      <div class="cert-code">CCA-F · anthropic.skilljar.com</div>
+      <div class="cert-meta">
+        <span class="cert-cost">$99</span>
+        <span class="cert-when tag tag-cyan">Jun 25</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:10px;">Launched Mar 2026. Barely anyone has it. Your AI differentiator signal.</div>
+    </div>
+
+    <div class="cert-card" style="border-top:2px solid var(--amber);">
+      <span class="cert-icon">☁️</span>
+      <div class="cert-name">AWS Solutions Architect Associate</div>
+      <div class="cert-code">SAA-C03 · aws.amazon.com</div>
+      <div class="cert-meta">
+        <span class="cert-cost">$150</span>
+        <span class="cert-when tag tag-amber">Aug 1</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:10px;">Gold standard for Cloud Architect roles. 60–80 hours prep. The heavyweight.</div>
+    </div>
+
+    <div class="cert-card" style="border-top:2px solid var(--purple);">
+      <span class="cert-icon">🏗️</span>
+      <div class="cert-name">HashiCorp Terraform Associate</div>
+      <div class="cert-code">Terraform · developer.hashicorp.com</div>
+      <div class="cert-meta">
+        <span class="cert-cost">$70</span>
+        <span class="cert-when tag tag-purple">Aug 5</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:10px;">The #1 DevSecOps signal. Every cloud team runs IaC. This proves you do too.</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:16px;" class="fade-in">
+    <div class="salary-rows">
+      <div style="padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted2);">
+          TOTAL CERT INVESTMENT &nbsp;·&nbsp; Spread across 3 months
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green);letter-spacing:0.05em;">
+          ~$319 &nbsp;<span style="font-size:14px;color:var(--muted2);font-family:'Outfit',sans-serif;font-weight:400;">total</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SALARY -->
+<section class="section">
+  <div class="section-label"><span>05</span> Financial Targets</div>
+  <h2 class="section-title">SALARY <em>ROADMAP</em></h2>
+
+  <div class="salary-rows fade-in">
+    <div class="salary-row">
+      <div class="salary-role">Junior Cloud Architect</div>
+      <div class="salary-bar"><div class="salary-fill" style="width:45%"></div></div>
+      <div class="salary-range">$2,500 – $3,500/mo</div>
+    </div>
+    <div class="salary-row">
+      <div class="salary-role">DevSecOps Engineer</div>
+      <div class="salary-bar"><div class="salary-fill" style="width:55%"></div></div>
+      <div class="salary-range">$2,800 – $4,500/mo</div>
+    </div>
+    <div class="salary-row">
+      <div class="salary-role">AI Automation Engineer</div>
+      <div class="salary-bar"><div class="salary-fill" style="width:60%"></div></div>
+      <div class="salary-range">$3,000 – $5,000/mo</div>
+    </div>
+    <div class="salary-row">
+      <div class="salary-role">Senior Cloud Architect (Year 2–3)</div>
+      <div class="salary-bar"><div class="salary-fill" style="width:85%"></div></div>
+      <div class="salary-range">$7,000 – $12,000+/mo</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BLOCKERS -->
+<section class="section">
+  <div class="section-label"><span>06</span> Risk Assessment</div>
+  <h2 class="section-title">POTENTIAL <em>BLOCKERS</em></h2>
+
+  <div class="blockers-grid fade-in">
+    <div class="blocker-card">
+      <div class="blocker-num">01</div>
+      <div class="blocker-info">
+        <div class="blocker-title">Weak Online Presence</div>
+        <div class="blocker-desc">Empty LinkedIn, no GitHub READMEs, no profile photo. Certs and projects become invisible without a storefront.</div>
+      </div>
+    </div>
+    <div class="blocker-card">
+      <div class="blocker-num">02</div>
+      <div class="blocker-info">
+        <div class="blocker-title">Can't Pitch Your Work</div>
+        <div class="blocker-desc">Can't explain your project in 60 seconds? Hiring managers move on. Practice your project pitch daily out loud.</div>
+      </div>
+    </div>
+    <div class="blocker-card">
+      <div class="blocker-num">03</div>
+      <div class="blocker-info">
+        <div class="blocker-title">Resume Has No Metrics</div>
+        <div class="blocker-desc">"I built X" loses to "Built X that reduced manual review time by 80%." Metrics signal impact, not just activity.</div>
+      </div>
+    </div>
+    <div class="blocker-card">
+      <div class="blocker-num">04</div>
+      <div class="blocker-info">
+        <div class="blocker-title">Wrong Role Targeting</div>
+        <div class="blocker-desc">Applying to senior roles or wrong stacks wastes time. 10 targeted applications beat 100 random ones every time.</div>
+      </div>
+    </div>
+    <div class="blocker-card">
+      <div class="blocker-num">05</div>
+      <div class="blocker-info">
+        <div class="blocker-title">Location Bias (Nigeria)</div>
+        <div class="blocker-desc">Beatable. Target UK, Canada, EU startups. Set up Payoneer/Wise. Pitch your WAT timezone overlap as an advantage.</div>
+      </div>
+    </div>
+    <div class="blocker-card">
+      <div class="blocker-num">06</div>
+      <div class="blocker-info">
+        <div class="blocker-title">Giving Up Before Week 10</div>
+        <div class="blocker-desc">Average job search = 40–60 apps before first response. Most people quit at week 3. Winners are still sending at week 10.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- JOB BOARDS -->
+<section class="section" id="jobs">
+  <div class="section-label"><span>07</span> Hunting Grounds</div>
+  <h2 class="section-title">WHERE TO <em>APPLY</em></h2>
+
+  <div class="boards-grid fade-in">
+    <div class="board-card">
+      <div><div class="board-name">Wellfound (AngelList)</div><div class="board-note">Best startup remote roles — salary shown upfront</div></div>
+      <span class="tier-badge tier-1">BEST</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">LinkedIn Jobs</div><div class="board-note">Set daily alerts — combines network + applications</div></div>
+      <span class="tier-badge tier-1">BEST</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">Andela</div><div class="board-note">Nigeria → global pipeline — apply first</div></div>
+      <span class="tier-badge tier-1">BEST</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">Remotive.io</div><div class="board-note">100% remote only — no location bias filters</div></div>
+      <span class="tier-badge tier-2">GREAT</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">We Work Remotely</div><div class="board-note">Oldest remote board — high quality listings</div></div>
+      <span class="tier-badge tier-2">GREAT</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">Otta.com</div><div class="board-note">UK/EU startups — salary transparency required</div></div>
+      <span class="tier-badge tier-2">GREAT</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">Himalayas</div><div class="board-note">Async-first companies — remote culture rated</div></div>
+      <span class="tier-badge tier-2">GREAT</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">HN Who's Hiring</div><div class="board-note">First Friday monthly — founders posting direct</div></div>
+      <span class="tier-badge tier-3">GOOD</span>
+    </div>
+    <div class="board-card">
+      <div><div class="board-name">Upwork</div><div class="board-note">Freelance → full-time pipeline + income now</div></div>
+      <span class="tier-badge tier-3">GOOD</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MASTER PROMPT -->
+<section class="section" id="prompt">
+  <div class="section-label"><span>08</span> Master Prompt</div>
+  <h2 class="section-title">YOUR CAREER <em>PROMPT</em></h2>
+  <p style="color:var(--muted2);font-size:13px;margin-bottom:28px;max-width:600px;">Copy this entire prompt into any new Claude conversation. Fill in the last section with your specific request for that day. Gets tailored advice every time without re-explaining your background.</p>
+
+  <div class="prompt-wrapper fade-in">
+    <div class="prompt-header">
+      <div class="prompt-dots">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+      </div>
+      <div class="prompt-title-bar">career-strategy-master.prompt — Silicon Valley Recruiter Framework</div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">⌘ COPY PROMPT</button>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-content" id="promptText">
+<span class="c-comment">// ═══════════════════════════════════════════════════════</span>
+<span class="c-comment">// SILICON VALLEY TECHNICAL RECRUITER + CAREER STRATEGIST</span>
+<span class="c-comment">// ═══════════════════════════════════════════════════════</span>
+
+<span class="c-section">Act as a Silicon Valley Technical Recruiter and Career</span>
+<span class="c-section">Strategist with 15+ years placing engineers at top</span>
+<span class="c-section">remote-first companies like Wiz, Snyk, Drata, Vanta,</span>
+<span class="c-section">Teleport, and Orca Security.</span>
+
+<span class="c-comment">// ── MY PROFILE ──────────────────────────────────────────</span>
+
+<span class="c-key">Degree:</span>        <span class="c-val">Cyber Security (Final Year)</span>
+<span class="c-key">Last Exam:</span>     <span class="c-val">June 6, 2026</span>
+<span class="c-key">Graduation:</span>    <span class="c-val">September 2026</span>
+<span class="c-key">NYSC:</span>          <span class="c-val">Starts October/November 2026</span>
+<span class="c-key">Location:</span>      <span class="c-val">Nigeria (targeting remote roles globally)</span>
+<span class="c-key">Salary Target:</span> <span class="c-val">$2,500–$5,000+/month remote</span>
+
+<span class="c-comment">// ── TARGET ROLES ────────────────────────────────────────</span>
+
+<span class="c-green">Primary:</span>
+  ├── Cloud Architect (Remote)
+  ├── DevSecOps Engineer (Remote)
+  └── AI Automation Engineer (Remote)
+
+<span class="c-green">Secondary:</span>
+  ├── Cloud Security Analyst
+  ├── Security Automation Engineer
+  └── Junior Solutions Architect
+
+<span class="c-comment">// ── CERTIFICATION ROADMAP ───────────────────────────────</span>
+
+<span class="c-purple">June 2026:</span>
+  └── Google AI Essentials (Free — Week 1)
+  └── CCA-F: Claude Certified Architect Foundations ($99)
+
+<span class="c-purple">August 2026:</span>
+  ├── AWS Solutions Architect Associate SAA-C03 ($150)
+  └── HashiCorp Terraform Associate ($70)
+
+<span class="c-purple">Future (Post NYSC):</span>
+  └── AWS Security Specialty (SCS-C02)
+
+<span class="c-comment">// ── PORTFOLIO PROJECTS (6 TOTAL) ────────────────────────</span>
+
+<span class="c-key">Pre-NYSC:</span>
+  ├── Project 1: AI Misconfiguration Detector
+  │   AWS + Terraform + Claude API + Python
+  │
+  └── Project 2: SAST Pipeline with AI Triage
+      GitHub Actions + Semgrep + Claude API + Docker
+
+<span class="c-key">During NYSC:</span>
+  └── Project 3: Compliance Copilot
+      Python + LangChain + RAG + Streamlit
+
+<span class="c-key">Post NYSC:</span>
+  ├── Project 4: Cloud Honeypot + Alert System
+  ├── Project 5: Threat Intel Automation Pipeline
+  └── Project 6: Zero Trust Homelab (Documented)
+
+<span class="c-comment">// ── TECH STACK ──────────────────────────────────────────</span>
+
+<span class="c-key">Cloud:</span>        <span class="c-val">AWS (primary) · Azure (secondary)</span>
+<span class="c-key">IaC:</span>          <span class="c-val">Terraform</span>
+<span class="c-key">DevSecOps:</span>    <span class="c-val">GitHub Actions · Semgrep · Docker · CI/CD</span>
+<span class="c-key">AI/Auto:</span>      <span class="c-val">Claude API · OpenAI · LangChain · RAG · n8n</span>
+<span class="c-key">Security:</span>     <span class="c-val">SAST/DAST · Zero Trust · SIEM · IAM · VPC</span>
+<span class="c-key">Languages:</span>    <span class="c-val">Python (primary)</span>
+
+<span class="c-comment">// ── MASTER TIMELINE ─────────────────────────────────────</span>
+
+<span class="c-val">Jun  6:   Last exam done</span>
+<span class="c-val">Jun 13:   Google AI Essentials badge live on LinkedIn</span>
+<span class="c-val">Jun 25:   CCA-F exam — sit and pass</span>
+<span class="c-val">Jul 31:   Project 1 + Project 2 shipped to GitHub</span>
+<span class="c-val">Aug  7:   AWS SAA-C03 + Terraform — sit both and pass</span>
+<span class="c-val">Aug 31:   Project 3 + 5 applications/day running</span>
+<span class="c-val">Sep:      Graduation + aggressive job hunt</span>
+<span class="c-val">Oct+:     NYSC deployment + remote work simultaneously</span>
+
+<span class="c-comment">// ── JOB SEARCH STRATEGY ─────────────────────────────────</span>
+
+<span class="c-key">Best Platforms:</span>
+  Wellfound · LinkedIn · Remotive · Andela · We Work Remotely
+
+<span class="c-key">Dream Companies:</span>
+  Wiz · Snyk · Orca Security · Drata · Vanta
+  Teleport · Tines · Stackhawk · Semgrep · Lacework
+
+<span class="c-key">Target Markets:</span>  <span class="c-val">UK · Canada · Germany · Netherlands · EU</span>
+<span class="c-key">Payments:</span>        <span class="c-val">Payoneer · Wise · Grey · Geegpay</span>
+
+<span class="c-comment">// ── CONTEXT RULES ───────────────────────────────────────</span>
+
+<span class="c-green">Always remember:</span>
+  ├── Based in Nigeria targeting remote roles globally
+  ├── Budget is limited — prioritize free resources
+  ├── NYSC starts October/November 2026
+  ├── 3 months of free time between June and September
+  ├── Differentiator: Cloud Architecture + DevSecOps + AI
+  ├── Target salary starts at $2,500/mo
+  ├── Receives international payments via Payoneer/Wise
+  └── New grad — projects are the proof of work
+
+<span class="c-comment">// ── YOUR REQUEST ────────────────────────────────────────</span>
+
+<span class="c-section">Based on everything above, help me with:</span>
+
+<span class="c-amber">[INSERT YOUR SPECIFIC REQUEST HERE]</span>
+
+<span class="c-comment">// Examples:</span>
+<span class="c-comment">// "Review my LinkedIn headline"</span>
+<span class="c-comment">// "Write my GitHub README for Project 1"</span>
+<span class="c-comment">// "Prepare me for a DevSecOps interview"</span>
+<span class="c-comment">// "Write a cold email to a hiring manager at Wiz"</span>
+<span class="c-comment">// "Build my study plan for AWS SAA-C03"</span>
+<span class="c-comment">// "Help me negotiate a $3,500/mo offer"</span>
+<span class="c-comment">// "Write a LinkedIn post about Project 1"</span>
+<span class="c-comment">// "Create my resume from scratch"</span>
+<span class="c-comment">// "What should I study today based on my timeline?"</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">CAREER · OS</div>
+  <div class="footer-text">
+    Built for a Cyber Security grad targeting <strong>Cloud Architect · DevSecOps · AI Automation</strong><br>
+    $2,500–$5,000+/month remote · June 2026 → Beyond
+  </div>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);">
+    Strategy: Silicon Valley Recruiter Framework
+  </div>
+</footer>
+
+<script>
+  // ── INTERSECTION OBSERVER FOR FADE-IN ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── COPY PROMPT ──
+  function copyPrompt() {
+    const btn = document.getElementById('copyBtn');
+    const raw = `Act as a Silicon Valley Technical Recruiter and Career Strategist with 15+ years placing engineers at top remote-first companies like Wiz, Snyk, Drata, Vanta, Teleport, and Orca Security.
+
+═══════════════════════════════════════
+MY PROFILE
+═══════════════════════════════════════
+
+Degree:        Cyber Security (Final Year)
+Last Exam:     June 6, 2026
+Graduation:    September 2026
+NYSC:          Starts October/November 2026
+Location:      Nigeria (targeting remote roles globally)
+Salary Target: $2,500–$5,000+/month remote
+
+═══════════════════════════════════════
+TARGET ROLES
+═══════════════════════════════════════
+
+Primary:
+├── Cloud Architect (Remote)
+├── DevSecOps Engineer (Remote)
+└── AI Automation Engineer (Remote)
+
+Secondary:
+├── Cloud Security Analyst
+├── Security Automation Engineer
+└── Junior Solutions Architect
+
+═══════════════════════════════════════
+CERTIFICATION ROADMAP
+═══════════════════════════════════════
+
+June 2026:
+└── Google AI Essentials (Free — Week 1)
+└── CCA-F: Claude Certified Architect Foundations ($99)
+
+August 2026:
+├── AWS Solutions Architect Associate SAA-C03 ($150)
+└── HashiCorp Terraform Associate ($70)
+
+Future (Post NYSC):
+└── AWS Security Specialty (SCS-C02)
+
+═══════════════════════════════════════
+PORTFOLIO PROJECTS (6 TOTAL)
+═══════════════════════════════════════
+
+Pre-NYSC:
+├── Project 1: AI Misconfiguration Detector
+│   AWS + Terraform + Claude API + Python
+└── Project 2: SAST Pipeline with AI Triage
+    GitHub Actions + Semgrep + Claude API + Docker
+
+During NYSC:
+└── Project 3: Compliance Copilot
+    Python + LangChain + RAG + Streamlit
+
+Post NYSC:
+├── Project 4: Cloud Honeypot + Alert System
+├── Project 5: Threat Intel Automation Pipeline
+└── Project 6: Zero Trust Homelab (Documented)
+
+═══════════════════════════════════════
+TECH STACK
+═══════════════════════════════════════
+
+Cloud:        AWS (primary) · Azure (secondary)
+IaC:          Terraform
+DevSecOps:    GitHub Actions · Semgrep · Docker · CI/CD
+AI/Auto:      Claude API · OpenAI · LangChain · RAG · n8n
+Security:     SAST/DAST · Zero Trust · SIEM · IAM · VPC
+Languages:    Python (primary)
+
+═══════════════════════════════════════
+MASTER TIMELINE
+═══════════════════════════════════════
+
+Jun  6:   Last exam done
+Jun 13:   Google AI Essentials badge live on LinkedIn
+Jun 25:   CCA-F exam — sit and pass
+Jul 31:   Project 1 + Project 2 shipped to GitHub
+Aug  7:   AWS SAA-C03 + Terraform — sit both and pass
+Aug 31:   Project 3 + 5 applications/day running
+Sep:      Graduation + aggressive job hunt
+Oct+:     NYSC deployment + remote work simultaneously
+
+═══════════════════════════════════════
+CONTEXT RULES
+═══════════════════════════════════════
+
+Always remember:
+├── Based in Nigeria targeting remote roles globally
+├── Budget is limited — prioritize free resources
+├── NYSC starts October/November 2026
+├── 3 months of free time between June and September
+├── Differentiator: Cloud Architecture + DevSecOps + AI
+├── Target salary starts at $2,500/mo
+├── Receives international payments via Payoneer/Wise
+└── New grad — projects are the proof of work
+
+═══════════════════════════════════════
+YOUR REQUEST
+═══════════════════════════════════════
+
+Based on everything above, help me with:
+
+[INSERT YOUR SPECIFIC REQUEST HERE]`;
+
+    navigator.clipboard.writeText(raw).then(() => {
+      btn.textContent = '✓ COPIED';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '⌘ COPY PROMPT';
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  }
+
+  // ── COUNTDOWN ──
+  function updateDate() {
+    const grad = new Date('2026-06-06T00:00:00');
+    const now = new Date();
+    const diff = grad - now;
+    if (diff > 0) {
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+  }
+  updateDate();
+</script>
+</body>
+</html>
